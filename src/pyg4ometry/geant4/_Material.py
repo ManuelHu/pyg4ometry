@@ -1,4 +1,7 @@
 from .. import exceptions as _exceptions
+import logging
+
+_log = logging.getLogger(__name__)
 
 _nistMaterialDict = None
 _nistMaterialList = None
