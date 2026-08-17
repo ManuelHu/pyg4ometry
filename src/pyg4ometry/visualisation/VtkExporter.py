@@ -285,7 +285,7 @@ class VtkExporter:
         vtkTransform.SetElement(2, 3, translation[2] / 1000)
         vtkTransform.SetElement(3, 3, 1)
 
-        transformPD = _vtk.vtkTransformPolyDataFilter()
+        transformPD = _vtk.vtkTransformFilter()
         transform = _vtk.vtkTransform()
         transform.SetMatrix(vtkTransform)
         transform.Scale(1e-3, 1e-3, 1e-3)
