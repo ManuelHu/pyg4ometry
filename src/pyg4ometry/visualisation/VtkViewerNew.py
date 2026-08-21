@@ -312,7 +312,7 @@ class VtkViewerNew(_ViewerBase):
                     plane.SetOrigin(*p)
                     plane.SetNormal(*n)
 
-                    cutTransFlt = _vtk.vtkTransformPolyDataFilter()
+                    cutTransFlt = _vtk.vtkTransformFilter()
                     vtransCut = _vtk.vtkTransform()
                     vtransCut.SetMatrix(vtrans)
                     cutTransFlt.SetTransform(vtransCut)
@@ -371,7 +371,7 @@ class VtkViewerNew(_ViewerBase):
                 triFlt = _vtk.vtkTriangleFilter()  # (tri)angle (F)i(lt)er
                 triFlt.AddInputData(pd)
 
-                traFlt = _vtk.vtkTransformPolyDataFilter()  # (tra)nsform (F)i(lt)er
+                traFlt = _vtk.vtkTransformFilter()  # (tra)nsform (F)i(lt)er
                 vtramat = _Convert.pyg42VtkTransformation(ip["transformation"], ip["translation"])
                 vtra = _vtk.vtkGeneralTransform()
                 vtra.Concatenate(vtramat)
