@@ -54,22 +54,20 @@ PYBIND11_MODULE(BRepBuilder, m) {
       m, "BRepBuilderAPI_MakePolygon")
       .def(py::init<const gp_Pnt &, const gp_Pnt &>())
       .def(py::init<const gp_Pnt &, const gp_Pnt &, const gp_Pnt &,
-                    const Standard_Boolean>())
+                    const bool>())
       .def(py::init<const gp_Pnt &, const gp_Pnt &, const gp_Pnt &,
-                    const gp_Pnt &, const Standard_Boolean>())
+                    const gp_Pnt &, const bool>())
       .def(py::init<const TopoDS_Vertex &, const TopoDS_Vertex &>())
       .def(py::init<const TopoDS_Vertex &, const TopoDS_Vertex &,
-                    const TopoDS_Vertex &, const Standard_Boolean>())
+                    const TopoDS_Vertex &, const bool>())
       .def(py::init<const TopoDS_Vertex &, const TopoDS_Vertex &,
-                    const TopoDS_Vertex &, const TopoDS_Vertex &,
-                    const Standard_Boolean>())
+                    const TopoDS_Vertex &, const TopoDS_Vertex &, const bool>())
       .def("Wire", &BRepBuilderAPI_MakePolygon::Wire);
 
   py::class_<BRepBuilderAPI_MakeFace, BRepBuilderAPI_MakeShape>(
       m, "BRepBuilderAPI_MakeFace")
       .def(py::init<>())
-      .def(py::init<const TopoDS_Wire &,
-                    const Standard_Boolean /*OnlyPlane*/>());
+      .def(py::init<const TopoDS_Wire &, const bool /*OnlyPlane*/>());
 
 #if OCC_VERSION_HEX >= 0x070700
   py::class_<BRepBuilderAPI_MakeShapeOnMesh, BRepBuilderAPI_MakeShape>(
@@ -78,11 +76,10 @@ PYBIND11_MODULE(BRepBuilder, m) {
 #endif
 
   py::class_<BRepBuilderAPI_Sewing>(m, "BRepBuilderAPI_Sewing")
-      .def(py::init<const Standard_Real /*tolerance=1.0e-06*/,
-                    const Standard_Boolean /*option1=Standard_True*/,
-                    const Standard_Boolean /*option2=Standard_True*/,
-                    const Standard_Boolean /*option3=Standard_True*/,
-                    const Standard_Boolean /*option4=Standard_False*/>())
+      .def(
+          py::init<const double /*tolerance=1.0e-06*/,
+                   const bool /*option1=true*/, const bool /*option2=true*/,
+                   const bool /*option3=true*/, const bool /*option4=false*/>())
       .def("Add", &BRepBuilderAPI_Sewing::Add)
       .def("Perform", &BRepBuilderAPI_Sewing::Perform)
       .def("SewedShape", &BRepBuilderAPI_Sewing::SewedShape);

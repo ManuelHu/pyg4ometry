@@ -3,6 +3,7 @@
 
 namespace py = pybind11;
 
+#include <NCollection_Sequence.hxx>
 #include <Standard_GUID.hxx>
 #include <Standard_Transient.hxx>
 #include <TCollection_ExtendedString.hxx>
@@ -12,7 +13,6 @@ namespace py = pybind11;
 #include <TDF_Data.hxx>
 #include <TDF_IDFilter.hxx>
 #include <TDF_Label.hxx>
-#include <TDF_LabelSequence.hxx>
 #include <TDF_TagSource.hxx>
 #include <TDF_Tool.hxx>
 #include <TDataStd_Name.hxx>
@@ -21,6 +21,10 @@ namespace py = pybind11;
 PYBIND
 *********************************************/
 PYBIND11_DECLARE_HOLDER_TYPE(T, opencascade::handle<T>, true);
+
+// TDF_LabelSequence is deprecated since OCCT 8.0 in favour of the
+// NCollection_Sequence instantiation it was a typedef for.
+using TDF_LabelSequence = NCollection_Sequence<TDF_Label>;
 
 PYBIND11_MODULE(TDF, m) {
   py::class_<TDF>(m, "TDFClass")
@@ -36,8 +40,8 @@ PYBIND11_MODULE(TDF, m) {
 
   py::class_<TDF_AttributeIterator>(m, "TDF_AttributeIterator")
       .def(py::init<>())
-      .def(py::init<const TDF_Label &, const Standard_Boolean>())
-      .def(py::init<const TDF_LabelNodePtr, const Standard_Boolean>())
+      .def(py::init<const TDF_Label &, const bool>())
+      .def(py::init<const TDF_LabelNodePtr, const bool>())
       .def("Initialize", &TDF_AttributeIterator::Initialize)
       .def("More", &TDF_AttributeIterator::More)
       .def("Next", &TDF_AttributeIterator::Next)
@@ -60,14 +64,13 @@ PYBIND11_MODULE(TDF, m) {
            })
       .def("FindAttribute",
            [](TDF_Label &label, const Standard_GUID &guid,
-              const Standard_Integer aTransaction,
+              const int aTransaction,
               opencascade::handle<TDataStd_Name> &attribute) {
              auto ret = label.FindAttribute(guid, aTransaction, attribute);
              return py::make_tuple(ret, attribute);
            })
       .def("FindChild",
-           [](TDF_Label &label, const Standard_Integer tag,
-              const Standard_Boolean create) {
+           [](TDF_Label &label, const int tag, const bool create) {
              auto retLabel = label.FindChild(tag, create);
              return py::make_tuple(!retLabel.IsNull(), retLabel);
            })
@@ -101,15 +104,18 @@ PYBIND11_MODULE(TDF, m) {
       .def("begin", &TDF_LabelSequence::begin)
       .def("end", &TDF_LabelSequence::end)
       .def("Dump", [](TDF_LabelSequence &ls) { return; })
-      .def("Value", &TDF_LabelSequence::Value)
+      // Value() is overloaded on the index type since OCCT 8.0
+      .def(
+          "Value",
+          static_cast<const TDF_Label &(TDF_LabelSequence::*)(const int) const>(
+              &TDF_LabelSequence::Value))
       .def(
           "__iter__",
           [](const TDF_LabelSequence &s) {
             return py::make_iterator(s.begin(), s.end());
           },
           py::keep_alive<0, 1>())
-      .def("__call__",
-           [](TDF_LabelSequence &ls, Standard_Integer i) { return ls(i); });
+      .def("__call__", [](TDF_LabelSequence &ls, int i) { return ls(i); });
 
   py::class_<TDF_TagSource, opencascade::handle<TDF_TagSource>, TDF_Attribute>(
       m, "TDF_TagSource")
@@ -127,7 +133,7 @@ PYBIND11_MODULE(TDF, m) {
       .def_static("Label",
                   [](const opencascade::handle<TDF_Data> &aDF,
                      const TCollection_AsciiString &anEntry, TDF_Label &aLabel,
-                     const Standard_Boolean create) {
+                     const bool create) {
                     TDF_Tool::Label(aDF, anEntry, aLabel, create);
                     return aLabel;
                   })
