@@ -35,7 +35,7 @@ PYBIND11_MODULE(Poly, m) {
 
   py::class_<Poly_Triangulation, opencascade::handle<Poly_Triangulation>,
              Standard_Transient>(m, "Poly_Triangulation")
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 6
+#if OCC_VERSION_HEX == 0x070600
       .def(py::init<>())
       .def(py::init<const Standard_Integer, const Standard_Integer,
                     const Standard_Boolean, const Standard_Boolean>())
@@ -45,7 +45,7 @@ PYBIND11_MODULE(Poly, m) {
     }))
 #endif
       .def("Deflection", [](Poly_Triangulation &pt) { return pt.Deflection(); })
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 6
+#if OCC_VERSION_HEX == 0x070600
       .def("HasGeometry", &Poly_Triangulation::HasGeometry)
 #endif
       .def("HasNormals", &Poly_Triangulation::HasNormals)
@@ -55,7 +55,7 @@ PYBIND11_MODULE(Poly, m) {
       .def("Node", &Poly_Triangulation::Node)
       .def("Normal", [](Poly_Triangulation &pt,
                         Standard_Integer i) { return pt.Normal(i); })
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR >= 6
+#if OCC_VERSION_HEX >= 0x070600
       .def("SetNode", &Poly_Triangulation::SetNode)
       .def("SetTriangle", &Poly_Triangulation::SetTriangle)
 #else

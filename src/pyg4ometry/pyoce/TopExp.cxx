@@ -1,3 +1,4 @@
+#include <Standard_Version.hxx>
 #include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 
@@ -21,7 +22,7 @@ PYBIND11_MODULE(TopExp, m) {
       .def("Value", &TopExp_Explorer::Value)
       .def("Current", &TopExp_Explorer::Current)
       .def("ReInit", &TopExp_Explorer::ReInit)
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 6
+#if OCC_VERSION_HEX == 0x070600
       .def("ExploredShape", &TopExp_Explorer::ExploredShape)
 #endif
       .def("Depth", &TopExp_Explorer::Depth)

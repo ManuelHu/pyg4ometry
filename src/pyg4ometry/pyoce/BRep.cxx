@@ -32,7 +32,7 @@ PYBIND11_MODULE(BRep, m) {
                     auto ret = BRep_Tool::Curve(E, L, First, Last);
                     return py::make_tuple(ret, L, First, Last);
                   })
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 6
+#if OCC_VERSION_HEX == 0x070600
       .def_static("Triangulation", &BRep_Tool::Triangulation);
 #else
 
