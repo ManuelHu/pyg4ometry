@@ -27,8 +27,8 @@ PYBIND11_MODULE(BRep, m) {
       .def_static("Surface",
                   [](const TopoDS_Face &F) { return BRep_Tool::Surface(F); })
       .def_static("Curve",
-                  [](const TopoDS_Edge &E, TopLoc_Location &L,
-                     Standard_Real &First, Standard_Real &Last) {
+                  [](const TopoDS_Edge &E, TopLoc_Location &L, double &First,
+                     double &Last) {
                     auto ret = BRep_Tool::Curve(E, L, First, Last);
                     return py::make_tuple(ret, L, First, Last);
                   })

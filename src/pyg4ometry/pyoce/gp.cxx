@@ -20,8 +20,7 @@ PYBIND11_MODULE(gp, m) {
 
   py::class_<gp_XYZ>(m, "gp_XYZ")
       .def(py::init<>())
-      .def(py::init<const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
+      .def(py::init<const double, const double, const double>())
       .def("X", &gp_XYZ::X)
       .def("Y", &gp_XYZ::Y)
       .def("Z", &gp_XYZ::Z)
@@ -40,8 +39,7 @@ PYBIND11_MODULE(gp, m) {
   py::class_<gp_Dir>(m, "gp_Dir")
       .def(py::init<>())
       .def(py::init<const gp_XYZ &>())
-      .def(py::init<const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
+      .def(py::init<const double, const double, const double>())
       .def("X", &gp_Dir::X)
       .def("Y", &gp_Dir::Y)
       .def("Z", &gp_Dir::Z)
@@ -53,8 +51,7 @@ PYBIND11_MODULE(gp, m) {
 
   py::class_<gp_Pnt>(m, "gp_Pnt")
       .def(py::init<>())
-      .def(py::init<const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
+      .def(py::init<const double, const double, const double>())
       .def("Transform", &gp_Pnt::Transform)
       .def("X", &gp_Pnt::X)
       .def("Y", &gp_Pnt::Y)
@@ -68,8 +65,7 @@ PYBIND11_MODULE(gp, m) {
   py::class_<gp_Vec>(m, "gp_Vec")
       .def(py::init<>())
       .def(py::init<const gp_XYZ &>())
-      .def(py::init<const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
+      .def(py::init<const double, const double, const double>())
       .def("X", &gp_Vec::X)
       .def("Y", &gp_Vec::Y)
       .def("Z", &gp_Vec::Z)
@@ -85,14 +81,12 @@ PYBIND11_MODULE(gp, m) {
 
   py::class_<gp_Trsf>(m, "gp_Trsf")
       .def(py::init<>())
-      .def("SetRotation",
-           [](gp_Trsf &t, const gp_Ax1 &ax, const Standard_Real ang) {
-             t.SetRotation(ax, ang);
-           })
+      .def("SetRotation", [](gp_Trsf &t, const gp_Ax1 &ax,
+                             const double ang) { t.SetRotation(ax, ang); })
       .def("SetTranslationPart", &gp_Trsf::SetTranslationPart)
       .def("SetValues", &gp_Trsf::SetValues)
       .def("GetRotation",
-           [](gp_Trsf &trsf, gp_XYZ &axis, Standard_Real angle) {
+           [](gp_Trsf &trsf, gp_XYZ &axis, double angle) {
              auto b = trsf.GetRotation(axis, angle);
              return py::make_tuple(b, axis, angle);
            })

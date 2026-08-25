@@ -21,7 +21,7 @@ PYBIND11_MODULE(STEPCAFControl, m) {
       .def("SetLayerMode", &STEPCAFControl_Reader::SetLayerMode)
       .def("ReadFile",
            [](STEPCAFControl_Reader &reader,
-              const Standard_CString filename) { // TODO-IFSelect_ReturnStatus
+              const char *filename) { // TODO-IFSelect_ReturnStatus
              reader.ReadFile(filename);
            })
       .def("Transfer", [](STEPCAFControl_Reader &reader,
@@ -38,8 +38,6 @@ PYBIND11_MODULE(STEPCAFControl, m) {
               opencascade::handle<TDocStd_Document> &doc) {
              writer.Transfer(doc);
            })
-      .def("WriteFile",
-           [](STEPCAFControl_Writer &writer, const Standard_CString filename) {
-             writer.Write(filename);
-           });
+      .def("WriteFile", [](STEPCAFControl_Writer &writer,
+                           const char *filename) { writer.Write(filename); });
 }

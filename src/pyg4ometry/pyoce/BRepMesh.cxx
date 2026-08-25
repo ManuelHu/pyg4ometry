@@ -15,9 +15,8 @@ PYBIND11_MODULE(BRepMesh, m) {
              opencascade::handle<BRepMesh_IncrementalMesh>>(
       m, "BRepMesh_IncrementalMesh")
       .def(py::init<>())
-      .def(py::init<const TopoDS_Shape &, const Standard_Real,
-                    const Standard_Boolean, const Standard_Real,
-                    const Standard_Boolean>())
+      .def(py::init<const TopoDS_Shape &, const double, const bool,
+                    const double, const bool>())
       .def(py::init<const TopoDS_Shape &, const IMeshTools_Parameters,
                     const Message_ProgressRange>());
 }

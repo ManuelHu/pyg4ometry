@@ -15,32 +15,28 @@ PYBIND11_DECLARE_HOLDER_TYPE(T, opencascade::handle<T>, true)
 PYBIND11_MODULE(Poly, m) {
   py::class_<Poly_Triangle>(m, "Poly_Triangle")
       .def(py::init<>())
-      .def(py::init<const Standard_Integer, const Standard_Integer,
-                    const Standard_Integer>())
-      .def("Set", [](Poly_Triangle &tri, const Standard_Integer n1,
-                     const Standard_Integer n2,
-                     const Standard_Integer n3) { tri.Set(n1, n2, n3); })
-      .def("Set", [](Poly_Triangle &tri, const Standard_Integer index,
-                     const Standard_Integer node) { tri.Set(index, node); })
+      .def(py::init<const int, const int, const int>())
+      .def("Set", [](Poly_Triangle &tri, const int n1, const int n2,
+                     const int n3) { tri.Set(n1, n2, n3); })
+      .def("Set", [](Poly_Triangle &tri, const int index,
+                     const int node) { tri.Set(index, node); })
       .def("Get",
            [](Poly_Triangle &tri) {
-             Standard_Integer n1, n2, n3;
+             int n1, n2, n3;
              tri.Get(n1, n2, n3);
              return py::make_tuple(n1, n2, n3);
            })
       .def("Value", &Poly_Triangle::Value)
-      .def("__call__", [](Poly_Triangle &tri, const Standard_Integer index) {
-        return tri(index);
-      });
+      .def("__call__",
+           [](Poly_Triangle &tri, const int index) { return tri(index); });
 
   py::class_<Poly_Triangulation, opencascade::handle<Poly_Triangulation>,
              Standard_Transient>(m, "Poly_Triangulation")
 #if OCC_VERSION_HEX == 0x070600
       .def(py::init<>())
-      .def(py::init<const Standard_Integer, const Standard_Integer,
-                    const Standard_Boolean, const Standard_Boolean>())
+      .def(py::init<const int, const int, const bool, const bool>())
 #else
-    .def(py::init([](const Standard_Integer a1, const Standard_Integer a2, const Standard_Boolean a3, const Standard_Boolean a4) {
+    .def(py::init([](const int a1, const int a2, const bool a3, const bool a4) {
         return new Poly_Triangulation(a1,a2,a3);
     }))
 #endif
@@ -53,16 +49,15 @@ PYBIND11_MODULE(Poly, m) {
       .def("NbNodes", &Poly_Triangulation::NbNodes)
       .def("NbTriangles", &Poly_Triangulation::NbTriangles)
       .def("Node", &Poly_Triangulation::Node)
-      .def("Normal", [](Poly_Triangulation &pt,
-                        Standard_Integer i) { return pt.Normal(i); })
+      .def("Normal", [](Poly_Triangulation &pt, int i) { return pt.Normal(i); })
 #if OCC_VERSION_HEX >= 0x070600
       .def("SetNode", &Poly_Triangulation::SetNode)
       .def("SetTriangle", &Poly_Triangulation::SetTriangle)
 #else
-    .def("SetNode",[](Poly_Triangulation &pt, Standard_Integer theIndex, const gp_Pnt &thePnt) {
+    .def("SetNode",[](Poly_Triangulation &pt, int theIndex, const gp_Pnt &thePnt) {
         pt.ChangeNode(theIndex) = thePnt;
     })
-    .def("SetTriangle",[](Poly_Triangulation &pt, Standard_Integer theIndex, const Poly_Triangle &theTri) {
+    .def("SetTriangle",[](Poly_Triangulation &pt, int theIndex, const Poly_Triangle &theTri) {
         pt.ChangeTriangle(theIndex) = theTri;
     })
 #endif

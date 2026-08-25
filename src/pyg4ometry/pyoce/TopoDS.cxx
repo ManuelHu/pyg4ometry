@@ -79,7 +79,7 @@ PYBIND11_MODULE(TopoDS, m) {
 #if OCC_VERSION_HEX == 0x070600
       .def("Location",
            [](TopoDS_Shape &shape, const TopLoc_Location &loc,
-              const Standard_Boolean theRaiseExc) {
+              const bool theRaiseExc) {
              return shape.Location(loc, theRaiseExc);
            })
 #else

@@ -10,12 +10,18 @@ namespace py = pybind11;
 #include <XCAFDoc_ShapeMapTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
 
+#include <NCollection_Sequence.hxx>
 #include <Standard_GUID.hxx>
+#include <TDF_Label.hxx>
 
 /*********************************************
 PYBIND
 *********************************************/
 PYBIND11_DECLARE_HOLDER_TYPE(T, opencascade::handle<T>, true)
+
+// TDF_LabelSequence is deprecated since OCCT 8.0 in favour of the
+// NCollection_Sequence instantiation it was a typedef for.
+using TDF_LabelSequence = NCollection_Sequence<TDF_Label>;
 
 PYBIND11_MODULE(XCAFDoc, m) {
 
@@ -56,18 +62,18 @@ PYBIND11_MODULE(XCAFDoc, m) {
       .def("FindComponent", &XCAFDoc_ShapeTool::FindComponent)
       .def("FindShape",
            [](XCAFDoc_ShapeTool &st, const TopoDS_Shape &shape,
-              TDF_Label &label, const Standard_Boolean findInstance) {
+              TDF_Label &label, const bool findInstance) {
              return st.FindShape(shape, label, findInstance);
            })
       .def("FindShape",
            [](XCAFDoc_ShapeTool &st, const TopoDS_Shape &shape,
-              const Standard_Boolean findInstance) {
+              const bool findInstance) {
              return st.FindShape(shape, findInstance);
            })
       .def("AddShape", &XCAFDoc_ShapeTool::AddShape)
       .def("GetComponents",
            [](XCAFDoc_ShapeTool &st, const TDF_Label &label,
-              TDF_LabelSequence &labels, const Standard_Boolean getsubchilds) {
+              TDF_LabelSequence &labels, const bool getsubchilds) {
              st.GetComponents(label, labels, getsubchilds);
            })
       .def("GetReferredShape",

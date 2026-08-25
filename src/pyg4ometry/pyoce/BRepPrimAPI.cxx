@@ -14,11 +14,9 @@ PYBIND11_MODULE(BRepPrimAPI, m) {
   py::class_<BRepPrimAPI_MakeBox, BRepBuilderAPI_MakeShape>(
       m, "BRepPrimAPI_MakeBox")
       .def(py::init<>())
-      .def(py::init<const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
-      .def(py::init<const gp_Pnt &, const Standard_Real, const Standard_Real,
-                    const Standard_Real>())
+      .def(py::init<const double, const double, const double>())
+      .def(py::init<const gp_Pnt &, const double, const double, const double>())
       .def(py::init<const gp_Pnt &, const gp_Pnt &>());
-  //.def(py::init<const gp_Ax2 &, const Standard_Real, const Standard_Real,
-  // const Standard_Real>); // TODO
+  //.def(py::init<const gp_Ax2 &, const double, const double,
+  // const double>); // TODO
 }
