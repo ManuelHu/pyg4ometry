@@ -1,3 +1,4 @@
+#include <Standard_Version.hxx>
 #include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 
@@ -29,7 +30,7 @@ PYBIND11_DECLARE_HOLDER_TYPE(T, opencascade::handle<T>, true)
 
 PYBIND11_MODULE(TopoDS, m) {
 
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR <= 8
+#if OCC_VERSION_HEX < 0x070900
   py::class_<TopoDS>(m, "TopoDSClass")
       .def_static("CompSolid",
                   [](TopoDS_Shape &shape) { return TopoDS::CompSolid(shape); })
@@ -75,7 +76,7 @@ PYBIND11_MODULE(TopoDS, m) {
       .def("IsNull", &TopoDS_Shape::IsNull)
       .def("Nullify", &TopoDS_Shape::Nullify)
       .def("Location", [](TopoDS_Shape &shape) { return shape.Location(); })
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR == 6
+#if OCC_VERSION_HEX == 0x070600
       .def("Location",
            [](TopoDS_Shape &shape, const TopLoc_Location &loc,
               const Standard_Boolean theRaiseExc) {

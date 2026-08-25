@@ -1,3 +1,4 @@
+#include <Standard_Version.hxx>
 #include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 
@@ -8,7 +9,7 @@ namespace py = pybind11;
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <BRepBuilderAPI_MakeShape.hxx>
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR > 6
+#if OCC_VERSION_HEX >= 0x070700
 #include <BRepBuilderAPI_MakeShapeOnMesh.hxx>
 #endif
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -70,7 +71,7 @@ PYBIND11_MODULE(BRepBuilder, m) {
       .def(py::init<const TopoDS_Wire &,
                     const Standard_Boolean /*OnlyPlane*/>());
 
-#if OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR > 6
+#if OCC_VERSION_HEX >= 0x070700
   py::class_<BRepBuilderAPI_MakeShapeOnMesh, BRepBuilderAPI_MakeShape>(
       m, "BRepBuilderAPI_MakeShapeOnMesh")
       .def(py::init<const opencascade::handle<Poly_Triangulation>>());
