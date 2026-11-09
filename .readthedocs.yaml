@@ -10,7 +10,7 @@ formats:
 build:
   os: "ubuntu-22.04"
   tools:
-    python: "3.10"
+    python: "3.12"
   jobs:
     post_install:
       - pip install --upgrade --upgrade-strategy only-if-needed furo "sphinx>=7.4.0" sphinx-autoapi sphinx-copybutton sphinx-inline-tabs

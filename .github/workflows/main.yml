@@ -85,7 +85,7 @@ jobs:
           .github/bin/setenv-ubuntu.sh
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - name: Get number of CPU cores
         uses: SimenB/github-actions-cpu-cores@v3
         id: cpu-cores
