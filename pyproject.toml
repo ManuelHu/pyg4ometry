@@ -154,13 +154,13 @@ lint.isort.required-imports = ["from __future__ import annotations"]
 "src/pyg4ometry/visualisation/{UsdViewer,ViewerHierarchyBase}.py" = ["T201"]
 
 [tool.cibuildwheel]
-build = ["*macosx*", "*manylinux_x86_64", "*win*"]
+build = ["*macosx*", "*manylinux_x86_64", "*manylinux_aarch64", "*win*"]
 skip = ["pp*", "cp36-*", "cp37-*"]
 
 [tool.cibuildwheel.linux]
 archs = ["auto"]
 manylinux-x86_64-image = "g4edge/manylinux2014_x86_64:latest"
-
+manylinux-aarch64-image = "g4edge/manylinux_2_28_aarch64:latest"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]

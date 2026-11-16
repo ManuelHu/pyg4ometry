@@ -25,9 +25,11 @@ jobs:
           path: dist/*.tar.gz
 
   build_linux_wheels:
-    name: Wheel on linux
-    runs-on: ubuntu-latest
+    name: Wheel on linux ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
       fail-fast: false
 
     steps:
@@ -43,10 +45,10 @@ jobs:
         env:
           MAKEFLAGS: -j${{ steps.cpu-cores.outputs.count }}
 
-      - name: Upload sdist artifact
+      - name: Upload linux artifact ${{ matrix.os }}
         uses: actions/upload-artifact@v7
         with:
-          name: linux_wheels
+          name: linux_wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   build_macos_wheels:
